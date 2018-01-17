@@ -7,7 +7,7 @@
 	<span v-html="renderBib(item)"></span>
 	<blockquote>
 		ID: {{ item.id }}
-		[ <a target="_blank" :href="'/#/item.id'">references</a> ]
+		[ <a target="_blank" :href="'/#/' + item.id">references</a> ]
 	</blockquote>
 	<blockquote v-for="filename in item.filelist">
 	File:
