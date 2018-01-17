@@ -1,0 +1,118 @@
+
+<html>
+<head>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="./citation.js"></script>
+<script type="text/javascript">
+var cite = new require('citation-js')();
+
+function update () {
+	var opt = {format: 'string'};
+	opt.type = 'html';
+	opt.lang = 'English';
+
+	cite.set($('#input').text())
+
+	console.log('================');
+	console.log($('#input').text());
+	
+	opt.style = 'citation-harvard1';
+	$('#output-citation').html(cite.get(opt));
+
+	opt.style = 'csl';
+	$('#output-json').html(cite.get(opt));
+}
+
+$(document).ready(function() {
+	update();
+});
+</script>
+<style>
+#input2 {
+	display: none;
+}
+</style>
+</head>
+<body>
+<pre id="input">
+@article{Steinbeck2003,
+	author = {Steinbeck, Christoph and Han, Yongquan and Kuhn, Stefan and Horlacher, Oliver and Luttmann, Edgar and Willighagen, Egon},
+	year = {2003},
+	title = {{The Chemistry Development Kit (CDK): an open-source Java library for Chemo- and Bioinformatics.}},
+	journal = {Journal of chemical information and computer sciences},
+	volume = {43},
+	number = {2},
+	pages = {493--500},
+	doi = {10.1021/ci025584y},
+	isbn = {2214707786},
+	issn = {0095-2338},
+	pmid = {12653513},
+	url = {http://www.ncbi.nlm.nih.gov/pubmed/12653513}
+}
+
+@mastersthesis{mastersthesis,
+	author = {Zhong, Wei and Fang, Hui},
+	title = {A novel similarity-search method for mathematical content in LaTeX markup and its implementation},
+	year = {2015},
+	school = {University of Delaware},
+}
+
+</pre>
+<pre id="input2">
+[
+{
+"author": [
+{
+"given": "Christoph",
+"family": "Steinbeck"
+},
+{
+"given": "Yongquan",
+"family": "Han"
+},
+{
+"given": "Stefan",
+"family": "Kuhn"
+},
+{
+"given": "Oliver",
+"family": "Horlacher"
+},
+{
+"given": "Edgar",
+"family": "Luttmann"
+},
+{
+"given": "Egon",
+"family": "Willighagen"
+}
+],
+"title": "The Chemistry Development Kit (CDK): an open-source Java library for Chemo- and Bioinformatics.",
+"container-title": "Journal of chemical information and computer sciences",
+"volume": "43",
+"issue": "2",
+"page": "493–500",
+"DOI": "10.1021/ci025584y",
+"ISBN": "2214707786",
+"ISSN": "0095-2338",
+"PMID": "12653513",
+"my_note": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+"my_refs": "bar/foo.bib",
+"URL": "http://www.ncbi.nlm.nih.gov/pubmed/12653513",
+"type": "article-journal",
+"citation-label": "Steinbeck2003",
+"id": "Steinbeck2003",
+"issued": {
+"date-parts": [
+[
+2003
+]
+]
+}
+}
+]
+</pre>
+<div id="output-citation"></div>
+<div id="output-json"></div>
+</body>
+</html>
