@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="limwidth">
 <h3> citations of {{ $route.params.id }} </h3>
 
 <ol>
@@ -7,6 +7,7 @@
 	<span v-html="renderBib(item)"></span>
 	<blockquote>
 		ID: {{ item.id }}
+		[ <a target="_blank" :href="'/#/item.id'">references</a> ]
 	</blockquote>
 	<blockquote v-for="filename in item.filelist">
 	File:
@@ -15,11 +16,9 @@
 		{{ filename }}
 		</a>
 	</blockquote>
-	<blockquote>
+	<blockquote v-if="item.note != ''">
 		Note:
-		<div class="limwidth">
 		<pre v-html="renderNote(item.note)"></pre>
-		</div>
 	</blockquote>
 </li>
 </ol>
@@ -48,7 +47,6 @@ module.exports = {
 			return bibjson2html(bibjson);
 		},
 		renderNote: function (text) {
-			console.log(text);
 			return text;
 		},
 		update: function () {
@@ -135,7 +133,7 @@ button {
 }
 
 div.limwidth {
-	width: 600px;
+	width: 900px;
 }
 
 pre {
