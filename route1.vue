@@ -17,13 +17,14 @@
 	</blockquote>
 	<blockquote>
 		Note:
-		<span v-html="renderNote(item.note)"></span>
+		<div class="limwidth">
+		<pre v-html="renderNote(item.note)"></pre>
+		</div>
 	</blockquote>
 </li>
 </ol>
 
 <button @click="test()">test</button>
-<div id="hiden"></div>
 
 </div>
 </template>
@@ -47,7 +48,8 @@ module.exports = {
 			return bibjson2html(bibjson);
 		},
 		renderNote: function (text) {
-			return $("#hiden").html(text);
+			console.log(text);
+			return text;
 		},
 		update: function () {
 			var id = this.$route.params.id;
@@ -130,5 +132,13 @@ li {
 }
 button {
 	display: none;
+}
+
+div.limwidth {
+	width: 600px;
+}
+
+pre {
+	white-space: pre-wrap;
 }
 </style>
