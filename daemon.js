@@ -15,9 +15,10 @@ console.log('listening on port ' + port);
 app.get('/', function (req, res) {
 	res.sendFile(path.resolve('./index.html'));
 
-}).get('/pdflist/:id', function (req, res) {
+}).get('/filelist/:id', function (req, res) {
 	var dir = './references/' + req.params.id;
-	glob(dir + "/*.pdf", function (err, files) {
-		res.json(files);
+	glob(dir + "/*.pdf", function (err, paths) {
+		var files = paths.map(x => x = path.basename(x));
+		res.json({"filelist": files});
 	});
 });

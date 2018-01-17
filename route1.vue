@@ -6,15 +6,24 @@
 <li v-for="item in bibjson">
 	<span v-html="renderBib(item)"></span>
 	<blockquote>
-		File: http://127.0.0.1:3838/get/root/spectre.pdf
+		ID: {{ item.id }}
+	</blockquote>
+	<blockquote v-for="filename in item.filelist">
+	File:
+		<a target="_blank"
+		   :href="'get/' + item.id + '/' + encodeURI(filename)">
+		{{ filename }}
+		</a>
 	</blockquote>
 	<blockquote>
-		Note: {{ item.title }}
+		Note:
+		<span v-html="renderNote(item.note)"></span>
 	</blockquote>
 </li>
 </ol>
 
 <button @click="test()">test</button>
+<div id="hiden"></div>
 
 </div>
 </template>
@@ -31,23 +40,43 @@ module.exports = {
 		this.update();
 	},
 	methods: {
-		test: function () {
-			console.log('test');
+		test: function (text) {
+			console.log(this.bibjson);
 		},
 		renderBib: function (bibjson) {
 			return bibjson2html(bibjson);
 		},
+		renderNote: function (text) {
+			return $("#hiden").html(text);
+		},
 		update: function () {
 			var id = this.$route.params.id;
 			var vm = this;
-			getfile(id + '/cites.bib', function (bibs) {
+			getfiletext(id + '/cites.bib', function (bibs) {
 				vm.bibtex = bibs;
 				vm.bibjson = bib2json(bibs);
-				console.log(bibs);
+				
+				setItems(vm.bibjson, function (item, key, val) {
+					vm.$set(item, key, val);
+				});
 			});
 		}
 	}
 };
+
+function setItems(items, callbk) {
+	for (var i = 0; i < items.length; i ++) {
+		(function () {
+			var item = items[i];
+			getfiletext(item.id + '/note.txt', function (note) {
+				callbk(item, 'note', note);
+			});
+			getfilelist(item.id, function (ret) {
+				callbk(item, 'filelist', ret['filelist']);
+			});
+		}());
+	}
+}
 
 function bibjson2html(bibjson) {
 	var opts = {format: 'string'};
@@ -68,7 +97,7 @@ function bib2json(bibtex) {
 	return JSON.parse(json);
 }
 
-function getfile(path, callbk) {
+function getfiletext(path, callbk) {
 	$.ajax({
 		type : "GET",
 		url : "get/" + path,
@@ -77,14 +106,29 @@ function getfile(path, callbk) {
 	}).done(function (text) {
 		callbk(text);
 	}).fail(function () {
-		console.log('bad');
 		callbk('');
+	});
+}
+
+function getfilelist(id, callbk) {
+	$.ajax({
+		type : "GET",
+		url : "filelist/" + id,
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+	}).done(function (jsonlist) {
+		callbk(jsonlist);
+	}).fail(function () {
+		callbk('{}');
 	});
 }
 </script>
 
 <style>
 li {
-  margin-top: 10px;
+	margin-top: 10px;
+}
+button {
+	display: none;
 }
 </style>
