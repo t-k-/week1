@@ -16,9 +16,13 @@
 		{{ filename }}
 		</a>
 	</blockquote>
+	<blockquote v-if="item.abstract">
+		Abstract:
+		<pre v-html="item.abstract"></pre>
+	</blockquote>
 	<blockquote v-if="item.note != ''">
 		Note:
-		<pre v-html="renderNote(item.note)"></pre>
+		<pre v-html="item.note"></pre>
 	</blockquote>
 </li>
 </ol>
@@ -45,9 +49,6 @@ module.exports = {
 		},
 		renderBib: function (bibjson) {
 			return bibjson2html(bibjson);
-		},
-		renderNote: function (text) {
-			return text;
 		},
 		update: function () {
 			var id = this.$route.params.id;
@@ -93,8 +94,17 @@ function bib2json(bibtex) {
 	opts.lang = 'English';
 	opts.style = 'csl';
 	citation_js.set(bibtex);
-	var json = citation_js.get(opts);
-	return JSON.parse(json);
+	var json1 = JSON.parse(citation_js.get(opts));
+	var json2 = bibtexParse.toJSON(bibtex);
+
+	console.log(json1.length);
+	console.log(json2.length);
+
+	for (var i = 0; i < json1.length; i++) {
+		json1[i].abstract = json2[i].entryTags.abstract || '';
+	}
+
+	return json1;
 }
 
 function getfiletext(path, callbk) {
@@ -129,7 +139,7 @@ li {
 	margin-top: 10px;
 }
 button {
-	display: none;
+	display: block;
 }
 
 div.limwidth {

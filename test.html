@@ -3,6 +3,7 @@
 <head>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="./citation.js"></script>
+<script type="text/javascript" src="./bibtexParse.js"></script>
 <script type="text/javascript">
 var cite = new require('citation-js')();
 
@@ -24,6 +25,7 @@ function update () {
 }
 
 $(document).ready(function() {
+	console.log(bibtexParse.toJSON($('#input').text()));
 	update();
 });
 </script>
@@ -40,6 +42,7 @@ $(document).ready(function() {
 	year = {2003},
 	title = {{The Chemistry Development Kit (CDK): an open-source Java library for Chemo- and Bioinformatics.}},
 	journal = {Journal of chemical information and computer sciences},
+	abstract = {abc, defg dog fox and cat.},
 	volume = {43},
 	number = {2},
 	pages = {493--500},
