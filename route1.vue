@@ -65,9 +65,12 @@ module.exports = {
 				vm.bibtex = bibs;
 				vm.bibjson = bib2json(bibs);
 				
-				setItems(vm.bibjson, function (item, key, val) {
-					vm.$set(item, key, val);
-				});
+				setTimeout(function () {
+					console.log('3 seconds!');
+					setItems(vm.bibjson, function (item, key, val) {
+						vm.$set(item, key, val);
+					});
+				}, 500);
 			});
 		}
 	}
@@ -113,6 +116,7 @@ function bib2json(bibtex) {
 
 	for (var i = 0; i < json1.length; i++) {
 		json1[i].abstract = json2[i].entryTags.abstract || '';
+		json1[i].note = '';
 	}
 
 	return json1;
