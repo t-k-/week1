@@ -5,6 +5,7 @@
 <ol>
 <li v-for="item in bibjson">
 	<span v-html="renderBib(item)"></span>
+
 	<blockquote>
 		ID: {{ item.id }}
 	</blockquote>
@@ -26,10 +27,9 @@
 		Note:
 		<pre v-html="item.note"></pre>
 	</blockquote>
+	<button @click="update()">refresh</button>
 </li>
 </ol>
-
-<button @click="test()">test</button>
 
 </div>
 </template>
@@ -46,9 +46,6 @@ module.exports = {
 		this.update();
 	},
 	methods: {
-		test: function (text) {
-			console.log(this.bibjson);
-		},
 		isBibfile: function (filename) {
 			if (filename.split('.').pop() == 'bib')
 				return true;
@@ -153,15 +150,13 @@ function getfilelist(id, callbk) {
 li {
 	margin-top: 10px;
 }
-button {
-	display: none;
-}
-
 div.limwidth {
 	width: 900px;
 }
-
 pre {
 	white-space: pre-wrap;
+}
+button {
+	display: block;
 }
 </style>
