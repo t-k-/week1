@@ -1,13 +1,12 @@
 <template>
 <div class="limwidth">
-<h3> citations of {{ $route.params.id }} </h3>
+<h3> References of {{ $route.params.id }} </h3>
 
 <ol>
 <li v-for="item in bibjson">
 	<span v-html="renderBib(item)"></span>
 	<blockquote>
 		ID: {{ item.id }}
-		[ <a target="_blank" :href="'/#/' + item.id">references</a> ]
 	</blockquote>
 	<blockquote v-for="filename in item.filelist">
 	File:
@@ -15,6 +14,9 @@
 		   :href="'get/' + item.id + '/' + encodeURI(filename)">
 		{{ filename }}
 		</a>
+		<span v-if="isBibfile(filename)">
+			[<a target="_blank" :href="'/#/' + item.id">render</a>]
+		</span>
 	</blockquote>
 	<blockquote v-if="item.abstract">
 		Abstract:
@@ -47,6 +49,12 @@ module.exports = {
 		test: function (text) {
 			console.log(this.bibjson);
 		},
+		isBibfile: function (filename) {
+			if (filename.split('.').pop() == 'bib')
+				return true;
+			else
+				return false;
+		},
 		renderBib: function (bibjson) {
 			return bibjson2html(bibjson);
 		},
@@ -71,6 +79,9 @@ function setItems(items, callbk) {
 			var item = items[i];
 			getfiletext(item.id + '/note.txt', function (note) {
 				callbk(item, 'note', note);
+			});
+			getfiletext(item.id + '/cites.txt', function (cites) {
+				callbk(item, 'cites_exists', cites);
 			});
 			getfilelist(item.id, function (ret) {
 				callbk(item, 'filelist', ret['filelist']);
@@ -139,7 +150,7 @@ li {
 	margin-top: 10px;
 }
 button {
-	display: block;
+	display: none;
 }
 
 div.limwidth {
