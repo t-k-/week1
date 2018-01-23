@@ -25,7 +25,8 @@ module.exports = {
 				return false;
 		},
 		renderBib: function (bibjson) {
-			return bibjson;
+			console.log(bibjson);
+			return bibjson2bib(bibjson);
 		},
 		update: function () {
 			var vm = this;
@@ -33,7 +34,6 @@ module.exports = {
 				vm.bibtex = bibs;
 				var jjj = bib2json(vm.bibtex);
 				vm.bibjson = jjj;
-				console.log(vm.bibjson);
 				
 				setTimeout(function () {
 				setItems(vm.bibjson, function (item,key,val) {
@@ -73,6 +73,15 @@ function bib2json(bibtex) {
 	}
 
 	return json1;
+}
+
+function bibjson2bib(bibjson) {
+	var opts = {format: 'string'};
+	opts.type = 'string';
+	opts.lang = 'English';
+	opts.style = 'bibtex';
+	citation_js.set(bibjson);
+	return citation_js.get(opts);
 }
 
 function getfiletext(path, callbk) {
