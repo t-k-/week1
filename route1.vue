@@ -16,7 +16,7 @@
 		{{ filename }}
 		</a>
 		<span v-if="isBibfile(filename)">
-			[<a target="_blank" :href="'/#/' + item.id">render</a>]
+			[<a target="_blank" :href="'/#/refs/' + item.id">render</a>]
 		</span>
 	</blockquote>
 	<blockquote v-if="item.abstract">
